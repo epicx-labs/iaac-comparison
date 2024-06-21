@@ -1,0 +1,17 @@
+meta {
+  name: Find All
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseURL}}/api/item
+  body: none
+  auth: none
+}
+
+body:json {
+  {
+    "name": "my name"
+  }
+}

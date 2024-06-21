@@ -1,0 +1,17 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseURL}}/api/item
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "my name"
+  }
+}
