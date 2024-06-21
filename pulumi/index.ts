@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as archive from "@pulumi/archive";
 import * as aws from "@pulumi/aws";
 import * as apigateway from "@pulumi/aws-apigateway";
+import { execSync } from "child_process";
 
 const assumeRole = aws.iam.getPolicyDocument({
   statements: [
@@ -50,30 +51,37 @@ const table = new aws.dynamodb.Table("pulumi_test_table", {
 });
 
 const dynamoPolicy = new aws.iam.Policy("pulumi_dynamodb_policy", {
-  policy: table.arn.apply((arn) =>
-    JSON.stringify({
+  policy: pulumi
+    .output({
       Version: "2012-10-17",
       Statement: [
         {
+          Effect: "Allow",
           Action: [
-            "dynamodb:PutItem",
-            "dynamodb:GetItem",
             "dynamodb:Query",
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
           ],
-          Effect: "Allow",
-          Resource: arn,
+          Resource: [
+            table.arn,
+            pulumi.interpolate`${table.arn}/index/*`, // Grant access to all indexes of the table
+          ],
         },
       ],
-    }),
-  ),
+    })
+    .apply(JSON.stringify),
 });
 
 new aws.iam.RolePolicyAttachment("pulumi_table_role_policy_attachment", {
   role: iamForLambda.name,
   policyArn: dynamoPolicy.arn,
 });
+
+const res = execSync("cd .. && npm run build");
+
+console.log(res.toString());
 
 const lambda = archive.getFile({
   type: "zip",

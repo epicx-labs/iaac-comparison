@@ -87,14 +87,25 @@ app.post("/item", async (c) => {
 });
 
 app.get("/item/:id", async (c) => {
-  const id = c.req.param("id");
-  // const data = await client.send(new GetItemCommand(params));
+  try {
+    const id = c.req.param("id");
+    const itemsModel = table.getModel("Item");
+    const data = await itemsModel.get({ id });
+    return c.json(data);
+  } catch (error: any) {
+    return c.json(error);
+  }
+});
 
-  // if (!data.Item) {
-  //   return c.text("Item not found", 404);
-  // }
-  //
-  // return c.json(data.Item);
+app.delete("/item/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const itemsModel = table.getModel("Item");
+    const data = await itemsModel.remove({ id });
+    return c.json(data);
+  } catch (error: any) {
+    return c.json(error);
+  }
 });
 
 app.all("*", async (c) => {
