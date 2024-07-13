@@ -30,3 +30,6 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+terraform/.terraform
+terraform/lambda_function_payload.zip
