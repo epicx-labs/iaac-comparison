@@ -40,56 +40,6 @@ export class CdkTestStack extends cdk.Stack {
       },
     });
 
-    table.addGlobalSecondaryIndex({
-      indexName: "gs2",
-      partitionKey: {
-        type: AttributeType.STRING,
-        name: "gs2pk",
-      },
-      sortKey: {
-        type: AttributeType.STRING,
-        name: "gs2sk",
-      },
-    });
-
-    table.addGlobalSecondaryIndex({
-      indexName: "gs3",
-      partitionKey: {
-        type: AttributeType.STRING,
-        name: "gs3pk",
-      },
-      sortKey: {
-        type: AttributeType.STRING,
-        name: "gs3sk",
-      },
-    });
-
-    table.addGlobalSecondaryIndex({
-      indexName: "gs4",
-      partitionKey: {
-        type: AttributeType.STRING,
-        name: "gs4pk",
-      },
-      sortKey: {
-        type: AttributeType.STRING,
-        name: "gs4sk",
-      },
-    });
-
-    table.addGlobalSecondaryIndex({
-      indexName: "gs5",
-      partitionKey: {
-        type: AttributeType.STRING,
-        name: "gs5pk",
-      },
-      sortKey: {
-        type: AttributeType.STRING,
-        name: "gs5sk",
-      },
-    });
-
-    console.log(table.tableArn);
-
     const dynamoPolicy = new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
